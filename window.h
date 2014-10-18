@@ -24,7 +24,9 @@ public:
 	
 private:
         GLWidget *m_glWidget;
-        twod *sideview;
+        twod *sideview1;
+        twod *sideview2;
+        twod *sideview3;
         catmull *catt;
 
     private slots:

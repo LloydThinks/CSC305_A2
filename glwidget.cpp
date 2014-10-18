@@ -55,35 +55,34 @@ void GLWidget::initializeGL()
     int i;
     QImage buf(256, 256, QImage::Format_RGB32);  // for texturing
 
-    GLfloat whiteDir[4] = {2.0, 2.0, 2.0, 1.0};
-    GLfloat whiteAmb[4] = {1.0, 1.0, 1.0, 1.0};
-    GLfloat lightPos[4] = {30.0, 30.0, 30.0, 1.0};
+//    GLfloat whiteDir[4] = {2.0, 2.0, 2.0, 1.0};
+//    GLfloat whiteAmb[4] = {1.0, 1.0, 1.0, 1.0};
+//    GLfloat lightPos[4] = {30.0, 30.0, 30.0, 1.0};
 
-    glEnable(GL_LIGHTING);
-    glEnable(GL_LIGHT0);
-    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
-    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, whiteAmb);
+//    glEnable(GL_LIGHTING);
+//    glEnable(GL_LIGHT0);
+//    glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_FALSE);
+//    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, whiteAmb);
 
-    glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDir);
-    glMaterialfv(GL_FRONT, GL_SPECULAR, whiteDir);
-    glMaterialf(GL_FRONT, GL_SHININESS, 20.0);
+//    glMaterialfv(GL_FRONT, GL_DIFFUSE, whiteDir);
+//    glMaterialfv(GL_FRONT, GL_SPECULAR, whiteDir);
+//    glMaterialf(GL_FRONT, GL_SHININESS, 20.0);
 
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, whiteDir);		// enable diffuse
-    glLightfv(GL_LIGHT0, GL_SPECULAR, whiteDir);	// enable specular
-    glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
+//    glLightfv(GL_LIGHT0, GL_DIFFUSE, whiteDir);		// enable diffuse
+//    glLightfv(GL_LIGHT0, GL_SPECULAR, whiteDir);	// enable specular
+//    glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 
     glShadeModel( GL_SMOOTH );
 
 // Set up the textures
 
     for (i=0; i<6; i++) {
-        makeSpots(i, &buf);
         tex[i] = QGLWidget::convertToGLFormat( buf );  // flipped 32bit RGBA
     }
 
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
-    glEnable( GL_TEXTURE_2D );
+//    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
+//    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
+//    glEnable( GL_TEXTURE_2D );
 
 // Set up various other stuff
     glClearColor( 0.5, 1.0, 0.75, 0.0 ); // Let OpenGL clear to black
@@ -127,7 +126,7 @@ void GLWidget::paintGL()
 
 
     */
-
+    sendUpdate();
 }
 
 /* 2D */
@@ -286,81 +285,6 @@ void GLWidget::drawFace( int tim, float w)
     glVertex3f(  -w,   w, w );
     glEnd();
 
-}
-
-void GLWidget::makeSpots(int tim, QImage *buf)
-{
-  int r=255, g=0, b=0;
-  int rad=25;
-  int w,h,i,j;
-
-  w=buf->width();
-  h=buf->height();
-
-  // set red
-  for (i=0; i<buf->width(); i++)
-    for (j=0; j<buf->height(); j++)
-      buf->setPixel(i,j, qRgb(r, g, b));
-
-  switch(tim) {
-  case 0: // value 1
-    drawCircle(rad, w/2, h/2, buf);
-    break;
-
-  case 1: // value 2
-    drawCircle(rad, w/4, h/4, buf);
-    drawCircle(rad, 3*w/4, 3*h/4, buf);
-    break;
-
-
-  case 2: // value 3
-    drawCircle(rad, w/4, h/4, buf);
-    drawCircle(rad, w/2, h/2, buf);
-    drawCircle(rad, 3*w/4, 3*h/4, buf);
-    break;
-
-  case 3: // value 4
-    drawCircle(rad, w/4, h/4, buf);
-    drawCircle(rad, w/4, 3*h/4, buf);
-    drawCircle(rad, 3*w/4, 3*h/4, buf);
-    drawCircle(rad, 3*w/4, h/4, buf);
-    break;
-
-  case 4: // value 5
-    drawCircle(rad, w/4, h/4, buf);
-    drawCircle(rad, w/4, 3*h/4, buf);
-    drawCircle(rad, w/2, h/2, buf);
-    drawCircle(rad, 3*w/4, 3*h/4, buf);
-    drawCircle(rad, 3*w/4, h/4, buf);
-    break;
-
-  case 5: // value 6
-    drawCircle(rad, w/4, h/4, buf);
-    drawCircle(rad, w/4, h/2, buf);
-    drawCircle(rad, w/4, 3*h/4, buf);
-
-    drawCircle(rad, 3*w/4, h/4, buf);
-    drawCircle(rad, 3*w/4, h/2, buf);
-    drawCircle(rad, 3*w/4, 3*h/4, buf);
-    break;
-
-  default: std::cerr << " big oopsy \n";
-    break;
-
-  }
-}
-
-void GLWidget::drawCircle(int radius, int xcen, int ycen,  QImage *buf)
-{
-  int i,j,r2;
-
-  r2=radius*radius;
-
-  for(i=xcen-radius; i<xcen+radius; i++)
-    for(j=ycen-radius; j<ycen+radius; j++) {
-      if  ( (i-xcen)*(i-xcen) + (j-ycen)*(j-ycen) < r2)
-        buf->setPixel(i,j,qRgb(255, 255, 255));
-   }
 }
 
 // communication with the window widget

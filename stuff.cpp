@@ -11,19 +11,12 @@ void fatal(char *s)
   exit(99);
 }
 
-void drawCircle(double radius, double xcen, double ycen, bool line)
-{
-   GLint i;
-   static GLfloat circcoords[100][2];
-  
-   for(i=0;i<100;i++) {
-     circcoords[i][0]=radius*cos(i*2*M_PI/100.0)+xcen;
-     circcoords[i][1]=radius*sin(i*2*M_PI/100.0)+ycen;
-   }
-   if (line)   glBegin(GL_LINES); else glBegin(GL_POLYGON);
-      for(i=0;i<100;i++)
-         glVertex2fv(&circcoords[i][0]);
-   glEnd();
+void drawPoint(double x, double y, double z) {
+    glColor3f(1.0f, 0.0f, 0.0f);
+    glPointSize(10.0f);
+    glBegin(GL_POINTS);
+    glVertex3d(x, y, z);
+    glEnd();
 }
 
 void drawLine(double x0, double y0, double x1, double y1 )

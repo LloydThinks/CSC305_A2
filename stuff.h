@@ -10,8 +10,8 @@ int nearEpsilon(double x, double epsilon);
 //int nearZero(double x);
 double myrand();
 void fatal(char *s);
-void drawCircle(double radius, double xcen, double ycen, bool line);
-void drawLine(double x0, double y0, double x1, double y1 );
+void drawPoint(double x, double y, double z);
+void drawLine(double x0, double y0, double x1, double y1);
 void drawLine(double x0, double y0, double z0, double x1, double y1, double z1 );
 
 void backCol();

@@ -21,10 +21,11 @@ class catmull
 {
 public:
 	catmull();
+    enum Mode{XY, XZ, ZY};
 	virtual ~catmull();
 	void mouseReleaseEvent( int x, int y, int butt );
 	void mouseMoveEvent   ( int x, int y, int butt );
-	void mousePressEvent  ( int x, int y, int butt );
+    void mousePressEvent  (int x, int y, int z, int button );
 	void draw();
 
 	void setxoff(int i){xoff=i;};
@@ -72,7 +73,7 @@ private:
 //	int iparam; // counts segments
 	int xoff, yoff;
 
-	void addPoint(int x, int y);
+    void addPoint(int x, int y, int z);
 	void movePoint(int x, int y);
     int select(int x, int y);
 	bool nearzero(double x);

@@ -23,10 +23,13 @@ class GLWidget;
 class twod : public QGLWidget {
     Q_OBJECT
 public:
-    twod(QWidget *parent = 0);
+    twod(catmull::Mode mode);
     ~twod();
-    void setCatt(catmull *c){catt=c;};  
-    void setgl(GLWidget *m){m_glWidget=m;};
+    void setCatt(catmull *c){catt=c;}
+    void setgl(GLWidget *m){m_glWidget=m;}
+
+public slots:
+    void myUpdate() { updateGL(); }
 
 signals:
     void sendUpdate();
@@ -54,7 +57,7 @@ private:
     catmull *catt;
     GLWidget *m_glWidget;
     void redraw();
-
+    catmull::Mode window;
 };
 
 #endif // TWOD_H

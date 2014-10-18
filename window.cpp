@@ -27,17 +27,30 @@ Window::Window(QWidget *parent):QDialog(parent)
     //All our drawings will be on glWidgetArea
     glWidgetArea->setWidget(m_glWidget); // gl widget perspective view
 
-    sideview=new twod();  // this is the first sideview
-    catt=new catmull();
+    sideview1 = new twod(catmull::XY);  // this is the first sideview
+    sideview2 = new twod(catmull::XZ);  // this is the first sideview
+    sideview3 = new twod(catmull::ZY);  // this is the first sideview
+    catt = new catmull();
 
-    sideview->setCatt(catt);
+    sideview1->setCatt(catt);
+    sideview2->setCatt(catt);
+    sideview3->setCatt(catt);
     m_glWidget->setCatt(catt);
-    sideview->setgl(m_glWidget);
-    sideview->show();
+    sideview1->setgl(m_glWidget);
+    sideview2->setgl(m_glWidget);
+    sideview3->setgl(m_glWidget);
+    sideview1->show();
+    sideview2->show();
+    sideview3->show();
     // set up the scale for the sideview
-    m_glWidget->setView(sideview->width(), sideview->height());
+    m_glWidget->setView(sideview1->width(), sideview1->height());
+    m_glWidget->setView(sideview2->width(), sideview2->height());
+    m_glWidget->setView(sideview3->width(), sideview3->height());
 
- //   connect(sideview, SIGNAL(sendUpdate()), m_glWidget, SLOT(myupdate()));
+
+    connect(m_glWidget, SIGNAL(sendUpdate()), sideview1, SLOT(myUpdate()));
+    connect(m_glWidget, SIGNAL(sendUpdate()), sideview2, SLOT(myUpdate()));
+    connect(m_glWidget, SIGNAL(sendUpdate()), sideview3, SLOT(myUpdate()));
 }
 
 void Window::resizeEvent( QResizeEvent * )

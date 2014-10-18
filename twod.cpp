@@ -1,12 +1,11 @@
 #include "twod.h"
 #include "ui_twod.h"
 
-twod::twod(QWidget *parent) :
-    QGLWidget(parent),
+twod::twod(catmull::Mode mode) :
     ui(new Ui::twod)
 {
     ui->setupUi(this);
-
+    window = mode;
 }
 
 twod::~twod()
@@ -39,13 +38,21 @@ void twod::initializeGL()
 void twod::paintGL()
 {
     glClear( GL_COLOR_BUFFER_BIT );
-
     glLoadIdentity();
+
+    if (window == catmull::XZ) {
+        glRotatef(-90, 1, 0, 0);
+    }
+    else if (window == catmull::ZY) {
+        glRotatef(90, 0, 1, 0);
+    }
+    else {
+        ;  // Do nothing
+    }
+
     catt->draw();
 
   // send signal to m_glWidget->updateGL
-
-
 }
 
 void twod::redraw()
@@ -62,7 +69,7 @@ void twod::resizeGL( int w, int h )
 {
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-    glOrtho(0.0,GLdouble(w),0,GLdouble(h),-10.0,10.0);
+    glOrtho(0.0,GLdouble(w),0,GLdouble(h),-1000.0,1000.0);
     glFlush();
     glMatrixMode(GL_MODELVIEW);
     glViewport( 0, 0, (GLint)w, (GLint)h );
@@ -70,7 +77,12 @@ void twod::resizeGL( int w, int h )
 
 void twod::mousePressEvent( QMouseEvent *e )
 {
-    catt->mousePressEvent(e->x(), height()-e->y(), e->button() );
+    if (window == catmull::XY)
+        catt->mousePressEvent(e->x(), height()-e->y(), 0, e->button() );
+    else if (window == catmull::XZ)
+        catt->mousePressEvent(e->x(), 0, height()-e->y(), e->button() );
+    else  // window == ZY
+        catt->mousePressEvent(0, height()-e->y(), e->x(), e->button() );
     updateGL();
 }
 

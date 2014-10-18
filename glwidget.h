@@ -48,7 +48,10 @@ public:
     void setView(int w, int h);
 
 public slots:
-    void myupdate(){updateGL();};
+    void myupdate(){updateGL();}
+
+signals:
+    void sendUpdate();
 
 protected:
     //Initialize the OpenGL Graphics Engine
@@ -85,7 +88,6 @@ private:
 
     // Functions
     void redraw();
-    void makeSpots(int tim, QImage *buf);
     void drawCircle(int radius, int xcen, int ycen,  QImage *buf);
     void drawFace( int tim, float w);
     void drawtFace(int tim, float w);

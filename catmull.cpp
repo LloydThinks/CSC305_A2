@@ -38,18 +38,15 @@ catmull::~catmull()
 
 }
 
-void catmull::mousePressEvent( int x, int y, int butt )
+void catmull::mousePressEvent( int x, int y, int z, int button )
 {
-	cpt= -1;
-	button = butt;
-	mousex =  x;
-	mousey =  y;
+    cpt= -1;
 
 	if (mousedown) return;
     mousedown = true;
 	// left to select and move right to add new point
-	if (button == Qt::RightButton) addPoint(mousex, mousey);
-	if (button == Qt::LeftButton)  movePoint(mousex, mousey);
+    if (button == Qt::RightButton) addPoint(x, y, z);
+    if (button == Qt::LeftButton)  movePoint(x, y);
 }
 
 void catmull::mouseReleaseEvent( int x, int y, int butt )
@@ -68,12 +65,12 @@ void catmull::mouseMoveEvent ( int x, int y, int butt )
 	if (mousedown) movePoint(x, y);
 }
 
-void catmull::addPoint(int x, int y)
+void catmull::addPoint(int x, int y, int z)
 {
 	if (lastpt<MAXP) {
         pnts[lastpt][X]=x;
         pnts[lastpt][Y]=y;
-        pnts[lastpt][Z]=0.0;  // for now
+        pnts[lastpt][Z]=z;  // for now
 		lastpt++;
 	}
 	if (lastpt>2) makeArcLength();
@@ -171,12 +168,13 @@ void catmull::drawConstVelCurve(int p)
 		
 		if (animatenow && nframe ==i && (seg+1)==p) {
 			glColor3f(0.0f, 0.0f, 0.1f);
-			drawCircle( (double)RADIUS, (double)x1, (double)y1, false);
+            drawPoint((double)x1, (double)y1, 0.0);
+
 		}
 
 		if (showsteps && !makeArcMode) {
 			glColor3f(0.9f, 0.1f, 0.1f);
-			drawCircle((double)RADIUS/3.0, (double)x1, (double)y1, false);
+            drawPoint(double(x1), double(y1), double(z1));
 		}
 
 			
@@ -198,7 +196,7 @@ void catmull::drawCurve(int p)
 	int parc;
 	x1 = pnts[p][0];
 	y1 = pnts[p][1];
-    z1 = pnts[p][Z];
+    z1 = pnts[p][2];
 
 	step = 1.0 /(double)numSteps;
   //  cerr << "catmull:  drawCurve: numSteps="<<numSteps<<" showsteps="<<showsteps NL;
@@ -221,7 +219,7 @@ void catmull::drawCurve(int p)
 		// this is essentially a Hermite spline with constraints on the tangent vectors
 		x1 = pnts[p][0]*(2.0*t3-3.0*t2+1.0) + pnts[p+1][0]*(-2.0*t3+3.0*t2) + tv[p][0]*(t3-2.0*t2+t) + tv[p+1][0]*(t3-t2);
 		y1 = pnts[p][1]*(2.0*t3-3.0*t2+1.0) + pnts[p+1][1]*(-2.0*t3+3.0*t2) + tv[p][1]*(t3-2.0*t2+t) + tv[p+1][1]*(t3-t2);
-        z1=0.0;
+        z1 = pnts[p][2]*(2.0*t3-3.0*t2+1.0) + pnts[p+1][2]*(-2.0*t3+3.0*t2) + tv[p][2]*(t3-2.0*t2+t) + tv[p+1][2]*(t3-t2);
 		// make the arc length calcs.
 		if (makeArcMode ) {
 			if (i>0) d += dist(x0, y0, x1, y1); 
@@ -234,12 +232,12 @@ void catmull::drawCurve(int p)
 
 		if (showsteps && !makeArcMode) {
 			glColor3f(0.9f, 0.5f, 0.1f);
-			drawCircle((double)RADIUS/3.0, (double)x1, (double)y1, false);
+            drawPoint(double(x1), double(y1), double(z1));
 		}
         //cerr <<makeArcMode  SEP animatenow<<" catmull seg="<< seg << " p="<<p<<" param="<<param<<" i="<<i<<"\n";
 		if (!makeArcMode && animatenow && param ==i && (seg+1)==p) {
 			glColor3f(0.0f, 0.0f, 0.1f);
-			drawCircle( (double)RADIUS, (double)x1, (double)y1, false);
+            drawPoint(double(x1), double(y1), double(z1));
 		}
 		glColor3f(0.0f, 0.0f, 1.0f);
        // cerr << "line " SEP x0 SEP y0 SEP x1 SEP y1 NL;
@@ -251,23 +249,26 @@ void catmull::drawCurve(int p)
 void catmull::draw()
 {
 	int i;
-	int x0,x1,y0,y1;
+    int x0,x1,y0,y1,z0,z1;
 	jVec2 a,b,c;
 	    
 	glColor3f(1.0f, 0.0f, 0.1f);
 	x1 = pnts[0][0];
-	y1 = pnts[0][1];
+    y1 = pnts[0][1];
+    z1 = pnts[0][2];
       //  cerr << "cat : " << lastpt NL;
 	for (i=0; i<lastpt; i++) {
 		x0=x1;
 		y0=y1;
+        z0=z1;
 		x1 = pnts[i][0];
 		y1 = pnts[i][1];
+        z1 = pnts[i][2];
                 glColor3f(0.2f, 0.8f, 0.1f);
-		drawCircle((double)RADIUS, (double)pnts[i][0], (double) pnts[i][1], false);
+        drawPoint(double(x1), double(y1), double(z1));
         glColor3f(1.0f, 0.0f, 0.1f);
-		drawLine(x0, y0, x1, y1);
-		x0 = x1;  y0 = y1;
+        drawLine(x0, y0, z0, x1, y1, z1);
+        x0 = x1;  y0 = y1; z0 = z1;
 		// set the tangent vectors according the tvmethod
 		if ( i>0 && i<(lastpt-1) ) {
 
