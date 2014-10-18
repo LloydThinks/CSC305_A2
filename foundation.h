@@ -58,5 +58,34 @@ const double ir72=0.5/sqrt(7.0);
 
 
 class iostream;
+
+//////////////////////////////////////////
+
+struct Vector3d
+{
+public:
+    Vector3d() { x = y = z = 0; }
+public:
+    double x, y, z;
+};
+
+struct Matrix33d
+{
+public:
+    Matrix33d() {
+        M11 = M12 = M13 = M21 = M22 = M23 = M31 = M32 = M33 = 0;
+    }
+public:
+    double M11, M12, M13, M21, M22, M23, M31, M32, M33;
+};
+
+inline Vector3d MultiplyMatrix33Vec3(const Vector3d & vec_in, const Matrix33d & matrix_in)
+{
+    Vector3d result;
+    result.x = vec_in.x * matrix_in.M11 + vec_in.y * matrix_in.M12 + vec_in.z * matrix_in.M13;
+    result.y = vec_in.x * matrix_in.M21 + vec_in.y * matrix_in.M22 + vec_in.z * matrix_in.M23;
+    result.z = vec_in.x * matrix_in.M31 + vec_in.y * matrix_in.M32 + vec_in.z * matrix_in.M33;
+    return result;
+}
 #endif
 

@@ -94,8 +94,16 @@ private:
     catmull *catt;
     QTimer *animationTimer;
 
+    // mouse routines for camera control to be implemented
+    Vector3d CameraPos;
+    QPoint lastMousePoint;
+    bool Rotating;
+    bool Scaling;
 
-
+    void RotateY(double rad);
+    void RotateZ(double rad);
+    void DoRotate(QPoint desc, QPoint orig);
+    void DoScale(QPoint desc, QPoint orig);
 };
 
 

@@ -6,6 +6,8 @@
 
 const double torad = M_PI/180.0;
 const double lim=0.5;
+const double RadPerPixel = - 0.01;
+const double MovePerPixel = - 0.1;
 GLfloat vertices[4][2] = {{100.0, 100.0}, {400.0, 100.0}, {400.0, 400.0}, {100.0, 400.0}}; //  vertex coords
 GLubyte indices[] = {0,1,1,2,2,3,3,0};
 
@@ -167,9 +169,6 @@ void GLWidget::help()
     QMessageBox::information( this, title, mess, QMessageBox::Ok );
 }
 
-
-
-
 void GLWidget::initLight()
 {
    GLfloat mat_specular[] = { 1.0, 1.0, 1.0, 1.0 };
@@ -181,7 +180,7 @@ void GLWidget::initLight()
    GLfloat light_specular[] = { 0.99, 0.99, 0.99, 1.0 };
    GLfloat light_diffuse[] = { 0.7, 0.7, 0.7, 1.0 };
 
-//   glClearColor(1.0, 1.0, 0.9, 1.0);
+// glClearColor(1.0, 1.0, 0.9, 1.0);
      glShadeModel (GL_SMOOTH);
    //   glShadeModel (GL_FLAT);
 
@@ -367,20 +366,20 @@ void GLWidget::drawCircle(int radius, int xcen, int ycen,  QImage *buf)
 // communication with the window widget
 void GLWidget::rotx(int a)
 {
-        xangle =  (double)a;
+    xangle =  (double)a;
 //	std::cerr << " x angle "<<xangle<<"\n";
-        updateGL();
+    updateGL();
 }
 void GLWidget::roty(int a)
 {
-        yangle =  (double)a;
-        updateGL();
+    yangle =  (double)a;
+    updateGL();
 }
 
 void GLWidget::rotz(int a)
 {
-        zangle =  (double)a;
-        updateGL();
+    zangle =  (double)a;
+    updateGL();
 }
 
 
@@ -411,29 +410,133 @@ void GLWidget::setView(int w, int h)
 }
 
 // mouse routines for camera control to be implemented
+//****************************************************
+
 void GLWidget::mousePressEvent( QMouseEvent *e )
 {
+    //TODO:When a button is pressed!
+    if ( e->button() == Qt::LeftButton)
+    {
+        Rotating = true;
+        lastMousePoint = e->pos();
+    }
 
- /*   if (df->getPan()) dopan(e->x(), height()-e->y() , true);
-    else {*/
+    if ( e->button() == Qt::RightButton)
+    {
+        Scaling = true;
+        lastMousePoint = e->pos();
+    }
 
-   /* button =  e->button();
-    if (button==Qt::LeftButton) {
-
-    }*/
-    updateGL();
 }
 
 void GLWidget::mouseReleaseEvent( QMouseEvent *e)
 {
+    //TODO:When some pressed mouse button is release!
+    if ( e->button() == Qt::LeftButton)
+    {
+        Rotating = false;
+        DoRotate(e->pos(), lastMousePoint);
+    }
 
+    if ( e->button() == Qt::RightButton)
+    {
+        Scaling = false;
+        DoRotate(e->pos(), lastMousePoint);
+    }
     updateGL();
+
 }
 
-void GLWidget::mouseMoveEvent ( QMouseEvent *e )
+void GLWidget::mouseMoveEvent( QMouseEvent *e )
 {
-  //  button =  e->button();
+    //TODO: when the mouse is moved!
+    if ( (e->buttons() & Qt::LeftButton) && Rotating)
+    {
+        DoRotate(e->pos(), lastMousePoint);
+        lastMousePoint = e->pos();
+    }
 
+    if ( (e->buttons() & Qt::RightButton) && Scaling)
+    {
+        DoScale(e->pos(), lastMousePoint);
+        lastMousePoint = e->pos();
+    }
     updateGL();
+
 }
 
+void GLWidget::RotateY(double rad)
+{
+    //TODO: rotate pVec around Y axis by the angle rad
+    double cosPhi = cos(rad);
+    double sinPhi = sin(rad);
+
+    Matrix33d m;
+    m.M11 = cosPhi;
+    m.M13 = sinPhi;
+    m.M22 = 1;
+    m.M31 = -sinPhi;
+    m.M33 = cosPhi;
+
+    Vector3d pVec = Vector3d();
+    pVec.x = xfrom;
+    pVec.y = yfrom;
+    pVec.z = zfrom;
+
+    pVec = MultiplyMatrix33Vec3(pVec, m);
+
+    xfrom = pVec.x;
+    yfrom = pVec.y;
+    zfrom = pVec.z;
+}
+
+void GLWidget::RotateZ(double rad)
+{
+    //TODO: rotate pVec around Z axis by the angle rad
+    double cosPhi = cos(rad);
+    double sinPhi = sin(rad);
+
+    Matrix33d m;
+    m.M11 = cosPhi;
+    m.M12 = -sinPhi;
+    m.M21 = sinPhi;
+    m.M22 = cosPhi;
+    m.M33 = 1;
+
+    Vector3d pVec = Vector3d();
+    pVec.x = xfrom;
+    pVec.y = yfrom;
+    pVec.z = zfrom;
+
+    pVec = MultiplyMatrix33Vec3(pVec, m);
+
+    xfrom = pVec.x;
+    yfrom = pVec.y;
+    zfrom = pVec.z;
+}
+
+void GLWidget::DoRotate(QPoint desc, QPoint orig)
+{
+    //TODO: adjust the camera position so the viewport is rotated
+    double YRot = (desc.x() - orig.x()) * RadPerPixel;
+    double ZRot = -1 * (desc.y() - orig.y()) * RadPerPixel;
+
+    RotateY(YRot);
+    RotateZ(ZRot);
+}
+
+void GLWidget::DoScale(QPoint desc, QPoint orig)
+{
+    //TODO: adjust the camera position so the viewport is scaled.
+    double length = sqrt(CameraPos.x * CameraPos.x + CameraPos.y * CameraPos.y + CameraPos.z * CameraPos.z);
+
+    double newLength = length + (desc.y() - orig.y()) * MovePerPixel;
+
+    if (newLength > 6)
+    {
+        double ratio = newLength / length;
+        CameraPos.x *= ratio;
+        CameraPos.y *= ratio;
+        CameraPos.z *= ratio;
+    }
+}

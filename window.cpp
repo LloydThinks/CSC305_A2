@@ -72,12 +72,12 @@ void Window::xrot(int x)
 
 void Window::yrot(int y)
 {
-        m_glWidget->roty(y);
+    m_glWidget->roty(y);
 }
 
 void Window::zrot(int z)
 {
-        m_glWidget->rotz(z);
+    m_glWidget->rotz(z);
 }
 
 void Window::xFrom(int a)

@@ -12,7 +12,7 @@
 const jVec3& jVec3::normalize ()
 {
     jFlt l = length();
-    
+
     if(l!=0) x/=l, y/=l, z/=l;
             
     return *this;
@@ -479,7 +479,7 @@ jMat3 jMat3::operator* ( jFlt k ) const
 
 // jMat3::column
 //
-// Sets the column to the given vector, the homogenous coordinate is
+// Sets the column to the given Vector3dvector, the homogenous coordinate is
 // supplied.
 void jMat3::column ( jUSInt i, const jVec2& c, jFlt h )
 {

@@ -14,6 +14,36 @@
    <string>OpenGl - Qt -Direct Mode Drawing</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="1">
+    <widget class="QScrollArea" name="glWidgetArea">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="horizontalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOff</enum>
+     </property>
+     <property name="widgetResizable">
+      <bool>true</bool>
+     </property>
+     <widget class="QWidget" name="scrollAreaWidgetContents">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>582</width>
+        <height>521</height>
+       </rect>
+      </property>
+      <zorder>btnClose</zorder>
+     </widget>
+    </widget>
+   </item>
    <item row="0" column="0" colspan="2">
     <widget class="QFrame" name="frame">
      <property name="enabled">
@@ -54,35 +84,6 @@
        </widget>
       </item>
      </layout>
-    </widget>
-   </item>
-   <item row="1" column="1">
-    <widget class="QScrollArea" name="glWidgetArea">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="verticalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
-     </property>
-     <property name="horizontalScrollBarPolicy">
-      <enum>Qt::ScrollBarAlwaysOff</enum>
-     </property>
-     <property name="widgetResizable">
-      <bool>true</bool>
-     </property>
-     <widget class="QWidget" name="scrollAreaWidgetContents">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>580</width>
-        <height>519</height>
-       </rect>
-      </property>
-     </widget>
     </widget>
    </item>
    <item row="1" column="0">
@@ -279,7 +280,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>9</x>
@@ -318,7 +319,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>9</x>
@@ -357,7 +358,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>9</x>
@@ -409,124 +410,12 @@
    <slot>endit()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>753</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>657</x>
-     <y>530</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btnClose</sender>
-   <signal>clicked()</signal>
-   <receiver>frmMain</receiver>
-   <slot>clear()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>753</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>650</x>
-     <y>579</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_10</sender>
-   <signal>clicked()</signal>
-   <receiver>frmMain</receiver>
-   <slot>aboutBut()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>99</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>793</x>
-     <y>41</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton_11</sender>
-   <signal>clicked()</signal>
-   <receiver>frmMain</receiver>
-   <slot>helpBut()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>437</x>
-     <y>45</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>196</x>
-     <y>101</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>btnClose</sender>
-   <signal>clicked()</signal>
-   <receiver>frmMain</receiver>
-   <slot>endit()</slot>
-   <hints>
-    <hint type="sourcelabel">
      <x>625</x>
      <y>32</y>
     </hint>
     <hint type="destinationlabel">
      <x>194</x>
      <y>215</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>pushButton</sender>
-   <signal>clicked()</signal>
-   <receiver>frmMain</receiver>
-   <slot>pushmebut()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>101</x>
-     <y>104</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>190</x>
-     <y>155</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSlider</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>frmMain</receiver>
-   <slot>xrot(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>95</x>
-     <y>181</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>186</x>
-     <y>256</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSlider_2</sender>
-   <signal>valueChanged(int)</signal>
-   <receiver>frmMain</receiver>
-   <slot>yrot(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>83</x>
-     <y>251</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>188</x>
-     <y>306</y>
     </hint>
    </hints>
   </connection>
@@ -547,18 +436,50 @@
    </hints>
   </connection>
   <connection>
-   <sender>horizontalSlider</sender>
+   <sender>horizontalSlider_2</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>lcdNumber</receiver>
-   <slot>display(int)</slot>
+   <receiver>frmMain</receiver>
+   <slot>yrot(int)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>106</x>
-     <y>181</y>
+     <x>83</x>
+     <y>251</y>
     </hint>
     <hint type="destinationlabel">
-     <x>130</x>
-     <y>182</y>
+     <x>188</x>
+     <y>306</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_11</sender>
+   <signal>clicked()</signal>
+   <receiver>frmMain</receiver>
+   <slot>helpBut()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>437</x>
+     <y>45</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>196</x>
+     <y>101</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_10</sender>
+   <signal>clicked()</signal>
+   <receiver>frmMain</receiver>
+   <slot>aboutBut()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>99</x>
+     <y>45</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>793</x>
+     <y>41</y>
     </hint>
    </hints>
   </connection>
@@ -579,6 +500,38 @@
    </hints>
   </connection>
   <connection>
+   <sender>horizontalSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>frmMain</receiver>
+   <slot>xrot(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>95</x>
+     <y>181</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>186</x>
+     <y>256</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>frmMain</receiver>
+   <slot>pushmebut()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>101</x>
+     <y>104</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>190</x>
+     <y>155</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
    <sender>horizontalSlider_3</sender>
    <signal>valueChanged(int)</signal>
    <receiver>lcdNumber_3</receiver>
@@ -595,34 +548,66 @@
    </hints>
   </connection>
   <connection>
-   <sender>horizontalSlider_5</sender>
-   <signal>valueChanged(int)</signal>
+   <sender>btnClose</sender>
+   <signal>clicked()</signal>
    <receiver>frmMain</receiver>
-   <slot>xFrom(int)</slot>
+   <slot>clear()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>98</x>
-     <y>414</y>
+     <x>753</x>
+     <y>45</y>
     </hint>
     <hint type="destinationlabel">
-     <x>190</x>
-     <y>445</y>
+     <x>650</x>
+     <y>579</y>
     </hint>
    </hints>
   </connection>
   <connection>
-   <sender>horizontalSlider_4</sender>
-   <signal>valueChanged(int)</signal>
+   <sender>btnClose</sender>
+   <signal>clicked()</signal>
    <receiver>frmMain</receiver>
-   <slot>yFrom(int)</slot>
+   <slot>endit()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>95</x>
-     <y>484</y>
+     <x>753</x>
+     <y>45</y>
     </hint>
     <hint type="destinationlabel">
-     <x>193</x>
-     <y>511</y>
+     <x>657</x>
+     <y>530</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_6</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lcdNumber_6</receiver>
+   <slot>display(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>83</x>
+     <y>544</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>158</x>
+     <y>544</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>lcdNumber</receiver>
+   <slot>display(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>106</x>
+     <y>181</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>130</x>
+     <y>182</y>
     </hint>
    </hints>
   </connection>
@@ -661,22 +646,6 @@
   <connection>
    <sender>horizontalSlider_6</sender>
    <signal>valueChanged(int)</signal>
-   <receiver>lcdNumber_6</receiver>
-   <slot>display(int)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>83</x>
-     <y>544</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>158</x>
-     <y>544</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>horizontalSlider_6</sender>
-   <signal>valueChanged(int)</signal>
    <receiver>frmMain</receiver>
    <slot>zFrom(int)</slot>
    <hints>
@@ -687,6 +656,38 @@
     <hint type="destinationlabel">
      <x>188</x>
      <y>556</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_5</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>frmMain</receiver>
+   <slot>xFrom(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>98</x>
+     <y>414</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>190</x>
+     <y>445</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>horizontalSlider_4</sender>
+   <signal>valueChanged(int)</signal>
+   <receiver>frmMain</receiver>
+   <slot>yFrom(int)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>95</x>
+     <y>484</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>193</x>
+     <y>511</y>
     </hint>
    </hints>
   </connection>
