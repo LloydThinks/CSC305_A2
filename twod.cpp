@@ -46,13 +46,9 @@ void twod::paintGL()
     else if (window == catmull::ZY) {
         glRotatef(90, 0, 1, 0);
     }
-    else {
-        ;  // Do nothing
-    }
+    else ;  // Do nothing
 
     catt->draw();
-
-  // send signal to m_glWidget->updateGL
 }
 
 void twod::redraw()
@@ -69,36 +65,55 @@ void twod::resizeGL( int w, int h )
 {
     glMatrixMode( GL_PROJECTION );
     glLoadIdentity();
-    glOrtho(0.0,GLdouble(w),0,GLdouble(h),-1000.0,1000.0);
+    glOrtho(-w,GLdouble(w),-h,GLdouble(h),-1000.0,1000.0);
     glFlush();
     glMatrixMode(GL_MODELVIEW);
     glViewport( 0, 0, (GLint)w, (GLint)h );
 }
 
+QVector<double> twod::convertClick(QVector<double> click)
+{
+    click[0] = ((click.at(0) * 2) - width());
+    click[1] = ((click.at(1) * 2) - height());
+    return click;
+}
+
 void twod::mousePressEvent( QMouseEvent *e )
 {
+    QVector<double> click = QVector<double>();
+    click.append(e->x());
+    click.append(height()-e->y());
+    click = convertClick(click);
     if (window == catmull::XY)
-        catt->mousePressEvent(e->x(), height()-e->y(), 0, e->button(), window );
+        catt->mousePressEvent(click.at(0), click.at(1), 0, e->button(), window );
     else if (window == catmull::XZ)
-        catt->mousePressEvent(e->x(), 0, height()-e->y(), e->button(), window );
+        catt->mousePressEvent(click.at(0), 0, click.at(1), e->button(), window );
     else  // window == ZY
-        catt->mousePressEvent(0, height()-e->y(), e->x(), e->button(), window );
+        catt->mousePressEvent(0, click.at(1), click.at(0), e->button(), window );
     updateGL();
 }
 
 void twod::mouseReleaseEvent( QMouseEvent *e)
 {
-    catt->mouseReleaseEvent(e->x(), height()-e->y(), e->button() , window);
+    QVector<double> click = QVector<double>();
+    click.append(e->x());
+    click.append(height()-e->y());
+    click = convertClick(click);
+    catt->mouseReleaseEvent(click.at(0), click.at(1), e->button() , window);
     updateGL();
 }
 
 void twod::mouseMoveEvent ( QMouseEvent *e )
 {
+    QVector<double> click = QVector<double>();
+    click.append(e->x());
+    click.append(height()-e->y());
+    click = convertClick(click);
     if (window == catmull::XY)
-        catt->mouseMoveEvent(e->x(), height()-e->y(), 0, window);
+        catt->mouseMoveEvent(click.at(0), click.at(1), 0, window);
     else if (window == catmull::XZ)
-        catt->mouseMoveEvent(e->x(), 0, height()-e->y(), window);
+        catt->mouseMoveEvent(click.at(0), 0, click.at(1), window);
     else  // window == ZY
-        catt->mouseMoveEvent(0, height()-e->y(), e->x(), window);
+        catt->mouseMoveEvent(0, click.at(1), click.at(0), window);
     updateGL();
 }

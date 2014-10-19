@@ -58,6 +58,8 @@ private:
     GLWidget *m_glWidget;
     void redraw();
     catmull::Mode window;
+
+    QVector<double> convertClick(QVector<double> click);
 };
 
 #endif // TWOD_H
