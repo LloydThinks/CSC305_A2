@@ -85,9 +85,9 @@ void GLWidget::initializeGL()
 //    glEnable( GL_TEXTURE_2D );
 
 // Set up various other stuff
-//    glClearColor( 0.5, 1.0, 0.75, 0.0 ); // Let OpenGL clear to black
-//    glEnable( GL_CULL_FACE );  	// don't need Z testing for convex objects
-//    glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
+    glClearColor( 0.5, 1.0, 0.75, 0.0 ); // Let OpenGL clear to black
+    glEnable( GL_CULL_FACE );  	// don't need Z testing for convex objects
+    glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
 
 // Make the object display list
     object = makeDice( );	// Generate an OpenGL display list
