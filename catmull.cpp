@@ -49,7 +49,7 @@ void catmull::mousePressEvent( int x, int y, int z, int button, Mode window )
     if (button == Qt::LeftButton)  movePoint(x, y, z, window);
 }
 
-void catmull::mouseReleaseEvent(int x, int y, int button , Mode window)
+void catmull::mouseReleaseEvent()
 {
 	mousedown = false;
 }

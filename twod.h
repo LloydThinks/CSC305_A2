@@ -49,7 +49,7 @@ protected:
     void resizeGL(int width, int height);
     //Handle mouse
         void mousePressEvent(QMouseEvent *event);
-        void mouseReleaseEvent(QMouseEvent *event);
+        void mouseReleaseEvent();
         void mouseMoveEvent(QMouseEvent *event);
 
 private:
