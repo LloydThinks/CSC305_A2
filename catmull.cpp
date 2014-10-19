@@ -95,28 +95,31 @@ void catmull::movePoint(int x, int y, int z, Mode window)
 
 int catmull::select(int x, int y, int z, Mode window)
 {
-    int i, windowX, windowY;
+    int i;
 
     if (window == XY)
     {
-        windowX = x;
-        windowY = y;
+        for (i=0; i<lastpt; i++) {
+            if (   ( (pnts[i][0]-RADIUS) <x && (pnts[i][0]+RADIUS) >x )
+                && ( (pnts[i][1]-RADIUS) <y && (pnts[i][1]+RADIUS) >y ) )
+                return i;
+        }
     }
     else if (window == XZ)
     {
-        windowX = x;
-        windowY = z;
+        for (i=0; i<lastpt; i++) {
+            if (   ( (pnts[i][0]-RADIUS) <x && (pnts[i][0]+RADIUS) >x )
+                && ( (pnts[i][2]-RADIUS) <z && (pnts[i][2]+RADIUS) >z ) )
+                return i;
+        }
     }
     else  // window == ZY
     {
-        windowX = Z;
-        windowY = y;
-    }
-
-    for (i=0; i<lastpt; i++) {
-        if (   ( (pnts[i][0]-RADIUS) <windowX && (pnts[i][0]+RADIUS) >windowX )
-            && ( (pnts[i][1]-RADIUS) <windowY && (pnts[i][1]+RADIUS) >windowY ) )
-            return i;
+        for (i=0; i<lastpt; i++) {
+            if (   ( (pnts[i][1]-RADIUS) <y && (pnts[i][1]+RADIUS) >y )
+                && ( (pnts[i][2]-RADIUS) <z && (pnts[i][2]+RADIUS) >z ) )
+                return i;
+        }
     }
     return -1;
 }
