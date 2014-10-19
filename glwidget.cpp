@@ -72,22 +72,22 @@ void GLWidget::initializeGL()
 //    glLightfv(GL_LIGHT0, GL_SPECULAR, whiteDir);	// enable specular
 //    glLightfv(GL_LIGHT0, GL_POSITION, lightPos);
 
-    glShadeModel( GL_SMOOTH );
+//    glShadeModel( GL_SMOOTH );
 
 // Set up the textures
 
-    for (i=0; i<6; i++) {
-        tex[i] = QGLWidget::convertToGLFormat( buf );  // flipped 32bit RGBA
-    }
+//    for (i=0; i<6; i++) {
+//        tex[i] = QGLWidget::convertToGLFormat( buf );  // flipped 32bit RGBA
+//    }
 
 //    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 //    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 //    glEnable( GL_TEXTURE_2D );
 
 // Set up various other stuff
-    glClearColor( 0.5, 1.0, 0.75, 0.0 ); // Let OpenGL clear to black
-    glEnable( GL_CULL_FACE );  	// don't need Z testing for convex objects
-    glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
+//    glClearColor( 0.5, 1.0, 0.75, 0.0 ); // Let OpenGL clear to black
+//    glEnable( GL_CULL_FACE );  	// don't need Z testing for convex objects
+//    glHint( GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST );
 
 // Make the object display list
     object = makeDice( );	// Generate an OpenGL display list
