@@ -23,7 +23,7 @@ public:
 	catmull();
     enum Mode{XY, XZ, ZY};
 	virtual ~catmull();
-    void mouseReleaseEvent(int x, int y, int button , Mode window);
+    void mouseReleaseEvent();
     void mouseMoveEvent   (int x, int y, int z , Mode window);
     void mousePressEvent  (int x, int y, int z, int button , Mode window);
 	void draw();

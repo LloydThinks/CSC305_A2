@@ -86,14 +86,19 @@ void twod::mousePressEvent( QMouseEvent *e )
     updateGL();
 }
 
-void twod::mouseReleaseEvent( QMouseEvent *e)
+void twod::mouseReleaseEvent()
 {
-    catt->mouseReleaseEvent(e->x(), height()-e->y(), e->button() , window);
+    catt->mouseReleaseEvent();
     updateGL();
 }
 
 void twod::mouseMoveEvent ( QMouseEvent *e )
 {
-    catt->mouseMoveEvent(e->x(), height()-e->y(), e->button() , window);
+    if (window == catmull::XY)
+        catt->mouseMoveEvent(e->x(), height()-e->y(), 0, window );
+    else if (window == catmull::XZ)
+        catt->mouseMoveEvent(e->x(), 0, height()-e->y(), window );
+    else  // window == ZY
+        catt->mouseMoveEvent(0, height()-e->y(), e->x(), window );
     updateGL();
 }
