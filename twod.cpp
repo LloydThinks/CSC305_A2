@@ -78,22 +78,22 @@ void twod::resizeGL( int w, int h )
 void twod::mousePressEvent( QMouseEvent *e )
 {
     if (window == catmull::XY)
-        catt->mousePressEvent(e->x(), height()-e->y(), 0, e->button() );
+        catt->mousePressEvent(e->x(), height()-e->y(), 0, e->button(), window );
     else if (window == catmull::XZ)
-        catt->mousePressEvent(e->x(), 0, height()-e->y(), e->button() );
+        catt->mousePressEvent(e->x(), 0, height()-e->y(), e->button(), window );
     else  // window == ZY
-        catt->mousePressEvent(0, height()-e->y(), e->x(), e->button() );
+        catt->mousePressEvent(0, height()-e->y(), e->x(), e->button(), window );
     updateGL();
 }
 
 void twod::mouseReleaseEvent( QMouseEvent *e)
 {
-    catt->mouseReleaseEvent(e->x(), height()-e->y(), e->button() );
+    catt->mouseReleaseEvent(e->x(), height()-e->y(), e->button() , window);
     updateGL();
 }
 
 void twod::mouseMoveEvent ( QMouseEvent *e )
 {
-    catt->mouseMoveEvent(e->x(), height()-e->y(), e->button() );
+    catt->mouseMoveEvent(e->x(), height()-e->y(), e->button() , window);
     updateGL();
 }

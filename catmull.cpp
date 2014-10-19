@@ -38,7 +38,7 @@ catmull::~catmull()
 
 }
 
-void catmull::mousePressEvent( int x, int y, int z, int button )
+void catmull::mousePressEvent( int x, int y, int z, int button, Mode window )
 {
     cpt= -1;
 
@@ -46,23 +46,17 @@ void catmull::mousePressEvent( int x, int y, int z, int button )
     mousedown = true;
 	// left to select and move right to add new point
     if (button == Qt::RightButton) addPoint(x, y, z);
-    if (button == Qt::LeftButton)  movePoint(x, y);
+    if (button == Qt::LeftButton)  movePoint(x, y, z, window);
 }
 
-void catmull::mouseReleaseEvent( int x, int y, int butt )
+void catmull::mouseReleaseEvent(int x, int y, int button , Mode window)
 {
-	button = butt;
-	mousex =  x;
-	mousey =  y;
 	mousedown = false;
 }
 
-void catmull::mouseMoveEvent ( int x, int y, int butt )
+void catmull::mouseMoveEvent ( int x, int y, int z, Mode window )
 {
-	button = butt;
-	mousex =  x;
-	mousey =  y;
-	if (mousedown) movePoint(x, y);
+    if (mousedown) movePoint(x, y, z, window);
 }
 
 void catmull::addPoint(int x, int y, int z)
@@ -70,20 +64,61 @@ void catmull::addPoint(int x, int y, int z)
 	if (lastpt<MAXP) {
         pnts[lastpt][X]=x;
         pnts[lastpt][Y]=y;
-        pnts[lastpt][Z]=z;  // for now
+        pnts[lastpt][Z]=z;
 		lastpt++;
 	}
 	if (lastpt>2) makeArcLength();
 }
 
-void catmull::movePoint(int x, int y)
+void catmull::movePoint(int x, int y, int z, Mode window)
 {	
-    //  only moving in x-y plane
-	if (cpt < 0) cpt = select(x,y);
-	if (cpt>=0) {
-		pnts[cpt][0]=x;
-		pnts[cpt][1]=y;
+    if (cpt < 0) cpt = select(x, y, z, window);
+    if (cpt>=0)
+    {
+        if (window == XY)
+        {
+            pnts[cpt][0]=x;
+            pnts[cpt][1]=y;
+        }
+        else if (window == XZ)
+        {
+            pnts[cpt][0]=x;
+            pnts[cpt][2]=z;
+        }
+        else  // window == ZY
+        {
+            pnts[cpt][1]=y;
+            pnts[cpt][2]=z;
+        }
 	}
+}
+
+int catmull::select(int x, int y, int z, Mode window)
+{
+    int i, windowX, windowY;
+
+    if (window == XY)
+    {
+        windowX = x;
+        windowY = y;
+    }
+    else if (window == XZ)
+    {
+        windowX = x;
+        windowY = z;
+    }
+    else  // window == ZY
+    {
+        windowX = Z;
+        windowY = y;
+    }
+
+    for (i=0; i<lastpt; i++) {
+        if (   ( (pnts[i][0]-RADIUS) <windowX && (pnts[i][0]+RADIUS) >windowX )
+            && ( (pnts[i][1]-RADIUS) <windowY && (pnts[i][1]+RADIUS) >windowY ) )
+            return i;
+    }
+    return -1;
 }
 
 bool catmull::nearzero(double x)
@@ -125,60 +160,60 @@ double catmull::getTvalue(int j, int seg)
 
 void catmull::drawConstVelCurve(int p)
 {
-	int i,j;
-	double d, ad, inc; // d is dist to next ad is accumulated distance inc is the increment per frame 
-	double totald;     // totald is the total distance for this segment
-	double t = 0.0;
-	double t2,t3;
+    int i,j;
+    double d, ad, inc; // d is dist to next ad is accumulated distance inc is the increment per frame
+    double totald;     // totald is the total distance for this segment
+    double t = 0.0;
+    double t2,t3;
     int x0,x1,y0,y1,z0,z1,k=0;
 //	double step;
-	int parc;
-	x1 = pnts[p][0];
-	y1 = pnts[p][1];
+    int parc;
+    x1 = pnts[p][0];
+    y1 = pnts[p][1];
     z0=z1=0.0;
-	d = ad = 0.0;
-	parc = (p-1)+(p-1)*numSteps;  // starting point for this segment
-	if (p==1) parc=0;
-	cerr << "const vel. curve parc="<<parc<<"frames= " << frames<<" numSteps="<<numSteps<<" ";
-	j = 0;
-	totald = arc[parc+numSteps][1];
-	inc = (double)totald/(double)frames;
+    d = ad = 0.0;
+    parc = (p-1)+(p-1)*numSteps;  // starting point for this segment
+    if (p==1) parc=0;
+    cerr << "const vel. curve parc="<<parc<<"frames= " << frames<<" numSteps="<<numSteps<<" ";
+    j = 0;
+    totald = arc[parc+numSteps][1];
+    inc = (double)totald/(double)frames;
 
-	cerr << " total distance this segment is "<<totald<<" seg number p="<<p<<" inc="<<inc<<"\n";
+    cerr << " total distance this segment is "<<totald<<" seg number p="<<p<<" inc="<<inc<<"\n";
 
-	for (i=0; i<frames; i++) {
-		d += inc; // first distance
-		x0=x1;
-		y0=y1;
-		ad = arc[j][1];
-		while (ad<d) {
-			ad=arc[j][1];
-			j++;
-		}
-		if (j>0) j--;  // go back to previous 
-		if (j+1 < numSteps) {		
-			if (nearzero( arc[j+1][1]-arc[j][1] ) ) cerr << " ***** zero error ****\n"; 
-			t=arc[j][0]+(arc[j+1][0]-arc[j][0])*(d-arc[j][1])/(arc[j+1][1]-arc[j][1]); 
-		} else t=1.0;
-		t2=t*t;
-		t3=t*t2;
-		x1 = pnts[p][0]*(2.0*t3-3.0*t2+1.0) + pnts[p+1][0]*(-2.0*t3+3.0*t2) + tv[p][0]*(t3-2.0*t2+t) + tv[p+1][0]*(t3-t2);
-		y1 = pnts[p][1]*(2.0*t3-3.0*t2+1.0) + pnts[p+1][1]*(-2.0*t3+3.0*t2) + tv[p][1]*(t3-2.0*t2+t) + tv[p+1][1]*(t3-t2);
+    for (i=0; i<frames; i++) {
+        d += inc; // first distance
+        x0=x1;
+        y0=y1;
+        ad = arc[j][1];
+        while (ad<d) {
+            ad=arc[j][1];
+            j++;
+        }
+        if (j>0) j--;  // go back to previous
+        if (j+1 < numSteps) {
+            if (nearzero( arc[j+1][1]-arc[j][1] ) ) cerr << " ***** zero error ****\n";
+            t=arc[j][0]+(arc[j+1][0]-arc[j][0])*(d-arc[j][1])/(arc[j+1][1]-arc[j][1]);
+        } else t=1.0;
+        t2=t*t;
+        t3=t*t2;
+        x1 = pnts[p][0]*(2.0*t3-3.0*t2+1.0) + pnts[p+1][0]*(-2.0*t3+3.0*t2) + tv[p][0]*(t3-2.0*t2+t) + tv[p+1][0]*(t3-t2);
+        y1 = pnts[p][1]*(2.0*t3-3.0*t2+1.0) + pnts[p+1][1]*(-2.0*t3+3.0*t2) + tv[p][1]*(t3-2.0*t2+t) + tv[p+1][1]*(t3-t2);
                 //cerr <<"x1="<<x1<<" y1="<<y1<< " ad="<<ad<<" j = " <<j<<" t="<<t<<"\n";
 		
-		if (animatenow && nframe ==i && (seg+1)==p) {
-			glColor3f(0.0f, 0.0f, 0.1f);
+        if (animatenow && nframe ==i && (seg+1)==p) {
+            glColor3f(0.0f, 0.0f, 0.1f);
             drawPoint((double)x1, (double)y1, 0.0);
 
-		}
+        }
 
-		if (showsteps && !makeArcMode) {
-			glColor3f(0.9f, 0.1f, 0.1f);
+        if (showsteps && !makeArcMode) {
+            glColor3f(0.9f, 0.1f, 0.1f);
             drawPoint(double(x1), double(y1), double(z1));
-		}
+        }
 
 			
-		glColor3f(0.0f, 0.0f, 1.0f);
+        glColor3f(0.0f, 0.0f, 1.0f);
         cerr << "line " SEP x0 SEP y0 SEP x1 SEP y1 NL;
         drawLine(x0, y0, z0, x1, y1, z1 );
 
@@ -191,7 +226,7 @@ void catmull::drawCurve(int p)
 	double t = 0.0;
 	double t2,t3;
 	double d=0.0;
-    int x0,x1,z0,y0,y1,z1, i,k=0;
+    int x0,x1,z0,y0,y1,z1, i;
 	double step;
 	int parc;
 	x1 = pnts[p][0];
@@ -301,17 +336,6 @@ void catmull::draw()
 		else if (motionType==1) drawConstVelCurve(i);
 		i++;
 	}
-}
-
-int catmull::select(int x, int y)
-{	
-	int i;
-	for (i=0; i<lastpt; i++) {
-		if (   ( (pnts[i][0]-RADIUS) <x && (pnts[i][0]+RADIUS) >x )
-			&& ( (pnts[i][1]-RADIUS) <y && (pnts[i][1]+RADIUS) >y ) )
-			return i;
-	}
-	return -1;
 }
 
 void catmull::animate()

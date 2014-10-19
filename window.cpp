@@ -28,8 +28,11 @@ Window::Window(QWidget *parent):QDialog(parent)
     glWidgetArea->setWidget(m_glWidget); // gl widget perspective view
 
     sideview1 = new twod(catmull::XY);  // this is the first sideview
+    sideview1->setWindowTitle("XY Plane");
     sideview2 = new twod(catmull::XZ);  // this is the first sideview
+    sideview2->setWindowTitle("XZ Plane");
     sideview3 = new twod(catmull::ZY);  // this is the first sideview
+    sideview3->setWindowTitle("ZY Plane");
     catt = new catmull();
 
     sideview1->setCatt(catt);

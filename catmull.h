@@ -23,22 +23,22 @@ public:
 	catmull();
     enum Mode{XY, XZ, ZY};
 	virtual ~catmull();
-	void mouseReleaseEvent( int x, int y, int butt );
-	void mouseMoveEvent   ( int x, int y, int butt );
-    void mousePressEvent  (int x, int y, int z, int button );
+    void mouseReleaseEvent(int x, int y, int button , Mode window);
+    void mouseMoveEvent   (int x, int y, int z , Mode window);
+    void mousePressEvent  (int x, int y, int z, int button , Mode window);
 	void draw();
 
-	void setxoff(int i){xoff=i;};
-	void setyoff(int i){yoff=i;};
+    void setxoff(int i){xoff=i;}
+    void setyoff(int i){yoff=i;}
 	void drawCurve(int p);
-	void clear(){lastpt=0;};
-	void setHull(bool b){hull=b;};
+    void clear(){lastpt=0;}
+    void setHull(bool b){hull=b;}
 	void animate();
 	bool step();
 	void setSpeed(int v){
 		if (v>numSteps) error=1;
 		else frames=v;
-	}; // speed for now is no. of frames/segment
+    } // speed for now is no. of frames/segment
 
 	void setSteps(int g){
 		if (g<frames) {
@@ -51,11 +51,11 @@ public:
 		}
 	};
 
-	void showSteps(bool b){showsteps=b; cerr << "showsteps\n";};
-	void setTV(int j){tvmethod=j;};
-	void setArcLength(bool b){arcLengthSwitch=b; cerr << "arc length is "<<b; };
-	void setTVScale(double s){tvscale=s;};
-	void setMotionType(int j){motionType=j;};
+    void showSteps(bool b){showsteps=b; cerr << "showsteps\n";}
+    void setTV(int j){tvmethod=j;}
+    void setArcLength(bool b){arcLengthSwitch=b; cerr << "arc length is "<<b; }
+    void setTVScale(double s){tvscale=s;}
+    void setMotionType(int j){motionType=j;}
 
 
 private:
@@ -74,8 +74,8 @@ private:
 	int xoff, yoff;
 
     void addPoint(int x, int y, int z);
-	void movePoint(int x, int y);
-    int select(int x, int y);
+    void movePoint(int x, int y, int z, Mode window);
+    int select(int x, int y, int z, Mode window);
 	bool nearzero(double x);
 	void makeArcLength();
 	int motionType; // 0 = parameter value 1 = const velocity
