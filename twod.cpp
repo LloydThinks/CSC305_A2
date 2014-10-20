@@ -99,7 +99,7 @@ void twod::mouseReleaseEvent( QMouseEvent *e)
     click.append(e->x());
     click.append(height()-e->y());
     click = convertClick(click);
-    catt->mouseReleaseEvent(click.at(0), click.at(1), e->button() , window);
+    catt->mouseReleaseEvent();
     updateGL();
 }
 

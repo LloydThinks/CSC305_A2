@@ -16,7 +16,7 @@ static char THIS_FILE[]=__FILE__;
 
 catmull::catmull()
 {
-		cerr << "building catmull\n";
+    cerr << "building catmull\n";
 
 	lastpt=0;
 	hull = true;
@@ -49,7 +49,7 @@ void catmull::mousePressEvent( int x, int y, int z, int button, Mode window )
     if (button == Qt::LeftButton)  movePoint(x, y, z, window);
 }
 
-void catmull::mouseReleaseEvent(int x, int y, int button , Mode window)
+void catmull::mouseReleaseEvent()
 {
 	mousedown = false;
 }
@@ -335,7 +335,7 @@ void catmull::draw()
 	i = 1; // the first point is ignored as we need i-1th point to find curve
 	
 	while (i<(lastpt-2)) {
-		if (makeArcMode || motionType==0) drawCurve(i);
+        if (makeArcMode || motionType==0) drawCurve(i);
 		else if (motionType==1) drawConstVelCurve(i);
 		i++;
 	}
