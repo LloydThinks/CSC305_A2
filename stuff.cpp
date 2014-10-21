@@ -7,7 +7,6 @@ double dist(double x0, double y0, double x1, double y1)
 
 void fatal(char *s)
 {
-  cerr << s << "\n";
   exit(99);
 }
 
@@ -61,7 +60,6 @@ double myrand()
 
 void error(char *buf, bool fatal)
 {
-  cerr << buf << "\n";
   if (fatal) exit(-1);
 }
 

@@ -1349,7 +1349,6 @@ jMat4::jMat4( Type type, jNorm3 u, jFlt theta )
 {
     if(type!=mRotateA)
     {
-        cerr << "Ambiguous matrix type, abort.\n";
         abort();
     }
 
@@ -1642,7 +1641,6 @@ jMat3 jMat3::rot () const
     jMat3 R(*this);
 
     R.m[0][2] = R.m[1][2] = 0;  // changed  clearly wrong I don't know what this is meant to do!
-    cerr << "badbadbadbad+++++++++++++++++++++++ rot +++++++++++++++++ \n";
 	exit( -1);
 	
 	return R;
@@ -1659,7 +1657,7 @@ jMat3 jMat3::rot () const
 jMat3::jMat3 ( Type type, jVec2 a, jVec2 b, jVec2 c, jVec2 d)
 {
     identity();
-	if (type != mBetween) cerr << "Must be mBetween type\n";
+    if (type != mBetween) ;
 	else {
 		jFlt scalef;
 		jVec2 trn;
@@ -1672,8 +1670,7 @@ jMat3::jMat3 ( Type type, jVec2 a, jVec2 b, jVec2 c, jVec2 d)
 		s=(d-c);
 		t=(q-c);
 			// angle between cd and cq
-		if (nearZero(s*t)) {
-			cerr << "Between not worked - zero length\n";
+        if (nearZero(s*t)) {
 			return;
 		} else {
 		angle = acos( (s*t)/(s.length()*t.length()) );   

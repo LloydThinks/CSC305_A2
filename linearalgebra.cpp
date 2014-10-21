@@ -365,10 +365,6 @@ jMat4 jMat4::inverse() const
     
     if(fabs(d) < 0.00000001)
     {
-        cerr << "determinant: " << d << endl;
-        cerr << "Error: Attempt to compute inverse of a ";
-        cerr << "singular matrix." << endl;
-        //cerr << *this << endl;
         abort();
     }
     
@@ -418,12 +414,9 @@ void jMat4::pmat()
       for (i=0; i<4; i++) {
           x = m[i][j];
           if ( nearZero(x)) x = 0.0;
-        cerr << x << "\t ";
 
      }
-      cerr << "\n";
   }
-      cerr << "\n";
 }
 
 //-----------------------------------------------------------------------------
@@ -526,8 +519,6 @@ jMat3 jMat3::inverse() const
     jFlt d = determinant();
     if(fabs(d) < 0.00001)
     {
-        cerr << "Error: Attempt to compute inverse of a ";
-        cerr << "singular matrix." << endl;
         abort();
     }
     for(int i=0; i<3; i++)

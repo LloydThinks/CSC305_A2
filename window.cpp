@@ -58,7 +58,6 @@ Window::Window(QWidget *parent):QDialog(parent)
 
 void Window::resizeEvent( QResizeEvent * )
 {
-  cerr << "new size "<< width() SEP height() NL;
 }
 
 void Window::clear()
@@ -66,47 +65,37 @@ void Window::clear()
     m_glWidget->clear();
 }
 
-void Window::aboutBut()
+void Window::changeLookAt()
 {
-    m_glWidget->about();
+    m_glWidget->changeLookAt();
 }
 
-void Window::helpBut()
+void Window::tensionSlider(int tensionValue)
 {
-    m_glWidget->help();
+    catt->tensionSlider(tensionValue);
 }
 
-void Window::pushmebut()
+void Window::groundPlane(bool showPlane)
 {
-    cerr << "pushme pushed\n";
+    m_glWidget->groundPlane(showPlane);
 }
 
-void Window::xrot(int x)
+void Window::axis(bool showAxis)
 {
-    m_glWidget->rotx(x);
+    m_glWidget->axis(showAxis);
 }
 
-void Window::yrot(int y)
+void Window::controlPoints(bool showControlPoints)
 {
-    m_glWidget->roty(y);
+    catt->controlPoints(showControlPoints);
 }
 
-void Window::zrot(int z)
+void Window::controlLines(bool showControlLines)
 {
-    m_glWidget->rotz(z);
+    catt->controlLines(showControlLines);
 }
 
-void Window::xFrom(int a)
+void Window::catmullRom(bool showCatmullRom)
 {
-    m_glWidget->setxFrom(a);
-}
-
-void Window::yFrom(int a)
-{
-    m_glWidget->setyFrom(a);
-}
-
-void Window::zFrom(int a)
-{
-    m_glWidget->setzFrom(a);
+    catt->catmullRom(showCatmullRom);
 }

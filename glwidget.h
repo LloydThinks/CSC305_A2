@@ -36,19 +36,14 @@ public:
     ~GLWidget();
 
     void clear();
-    void about();
-    void help();
-    void rotx(int);
-    void roty(int);
-    void rotz(int);
-    void setxFrom(int a);
-    void setyFrom(int a);
-    void setzFrom(int a);
-    void setCatt(catmull *c){catt=c;};
+    void setCatt(catmull *c){catt=c;}
     void setView(int w, int h);
+    void groundPlane(bool showGroundPlaneL);
+    void axis(bool showAxisL);
 
 public slots:
     void myupdate(){updateGL();}
+    void changeLookAt();
 
 signals:
     void sendUpdate();
@@ -80,18 +75,12 @@ private:
 
     void displayImage();
     void drawCircle(double radius, double xcen, double ycen, bool line, int nseg);
-    // for display list
-    int object;
     // for the cube
-    double xangle, yangle, zangle, scale;
-    QImage tex[6]; // one for each face
+    double scale;
 
     // Functions
     void redraw();
     void drawCircle(int radius, int xcen, int ycen,  QImage *buf);
-    void drawFace( int tim, float w);
-    void drawtFace(int tim, float w);
-    GLuint makeDice( );
     void initLight();
     catmull *catt;
     QTimer *animationTimer;
@@ -101,6 +90,10 @@ private:
     QPoint lastMousePoint;
     bool Rotating;
     bool Scaling;
+    bool showGroundPlane;
+    bool showAxis;
+
+    int lookingAt;
 
     void RotateY(double rad);
     void RotateZ(double rad);

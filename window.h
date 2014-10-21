@@ -21,31 +21,29 @@ class Window : public QDialog, public Ui::frmMain
 public:
 	//Constructor 
 	Window(QWidget *parent = 0);
+
+public slots:
+    void changeLookAt();
+    void tensionSlider(int tensionValue);
+    void groundPlane(bool showPlane);
+    void axis(bool showAxis);
+    void controlPoints(bool showControlPoints);
+    void controlLines(bool showControlLines);
+    void catmullRom(bool showCatmullRom);
+
 	
 private:
-        GLWidget *m_glWidget;
-        twod *sideview1;
-        twod *sideview2;
-        twod *sideview3;
-        catmull *catt;
+    GLWidget *m_glWidget;
+    twod *sideview1;
+    twod *sideview2;
+    twod *sideview3;
+    catmull *catt;
 
-    private slots:
-        void endit(){cerr << "goodbye\n"; exit(0);};
-        void clear();
-        void aboutBut();
-        void helpBut();
-        void pushmebut();
-
-        void xrot(int);
-        void yrot(int);
-        void zrot(int);
-
-        void xFrom(int);
-        void yFrom(int);
-        void zFrom(int);
+private slots:
+    void clear();
 
 protected:
-         void  resizeEvent(QResizeEvent * );
+     void  resizeEvent(QResizeEvent * );
 
 };
 

@@ -16,21 +16,22 @@ static char THIS_FILE[]=__FILE__;
 
 catmull::catmull()
 {
-    cerr << "building catmull\n";
-
 	lastpt=0;
 	hull = true;
 	mousedown=false;
 	animatenow=false;
 	tvmethod=0;
 	lastArc=0;
-	makeArcMode=false;
-	tvscale = 0.5;
+    makeArcMode=false;
     motionType =0;
 	numSteps=10;
 	frames = 5;
 	error=0;
-    tension = 0.5;
+    tensionValue = 50;
+
+    showControlPoints = true;
+    showControlLines = true;
+    showCatmullRom = true;
 }
 
 catmull::~catmull()
@@ -129,37 +130,6 @@ bool catmull::nearzero(double x)
 	else return false;
 }
 
-double catmull::getTvalue(int j, int seg)
-{
-	// seg is the segment index currently being drawn, index in the arc table
-
-	// I want the parameter value corresponding to constant velocity
-		
-	switch (motionType) {
-	case 0:  // 0 = parameter value do nothing
-		if (seg+j > lastArc) cerr << " ***** arrgghh *****\n";
-		else {
-                        //cerr << arc[seg+j][0]<<" seg="<<seg<<" j="<<j<<"\n";
-			return	arc[seg+j][0];
-		}
-		break;
-	case 1: // constant velocity
-		// total distance is arc[seg+j][1]
-		cerr << "total distance is "<< arc[seg+j][1]<<"\n"; // in this segment
-		// we want to travel at a speed of total distance / frames*nsegs as frames/seg is the setting
-		// there are numSteps (number of frames per segment) in the parametric space 
-		// and frames frames/segment tframes total in the object space 
-		// which step is this velocity?
-		// total dist/time =  arc[seg+p][1] / speed     but 1/numSteps is the 0-1 velocity
-		// distance to be travelled at each step = 
-
-		break;
-	case 2: // ease in ease out
-		break;
-	}
-	return 0.0; // shows there is an error
-}
-
 void catmull::drawCurve(int pnt1[], int pnt2[], int pnt3[], int pnt4[])
 {
     glColor3f(0.129f, 0.850f, 0.768f);
@@ -167,13 +137,12 @@ void catmull::drawCurve(int pnt1[], int pnt2[], int pnt3[], int pnt4[])
     double stepY0 = double(pnt2[1]);
     double stepZ0 = double(pnt2[2]);
     double stepX1, stepY1, stepZ1;
-    double t = tension;
+    double t = double(tensionValue)/50.0;
     double step = 1.0/double(numSteps);
     double u = step;
 
     for (int i = 0; i < numSteps; i++)
     {
-        qDebug() << u;
         stepX1 = (double(pnt1[0]) * (-t*u + 2*t*u*u - t*u*u*u) + \
                   double(pnt2[0]) * (1 + (t-3)*u*u + (2-t)*u*u*u) + \
                   double(pnt3[0]) * (t*u + (3-2*t)*u*u + (t-2)*u*u*u) + \
@@ -214,16 +183,26 @@ void catmull::draw()
 		x1 = pnts[i][0];
 		y1 = pnts[i][1];
         z1 = pnts[i][2];
-        glColor3f(0.2f, 0.8f, 0.1f);
-        //drawPoint(double(x1), double(y1), double(z1));
-        //glColor3f(1.0f, 0.0f, 0.1f);
-        //drawLine(x0, y0, z0, x1, y1, z1);
+        if (showControlPoints)
+        {
+            glColor3f(0.2f, 0.8f, 0.1f);
+            drawPoint(double(x1), double(y1), double(z1));
+        }
+        if (showControlLines)
+        {
+            glColor3f(1.0f, 0.0f, 0.1f);
+            drawLine(x0, y0, z0, x1, y1, z1);
+        }
         x0 = x1;  y0 = y1; z0 = z1;
 
+
         // Draw the curve between each segment
-        if (i > 1 && i < (lastpt - 1))
+        if (showCatmullRom)
         {
-            drawCurve(pnts[i-2], pnts[i-1], pnts[i], pnts[i+1]);
+            if (i > 1 && i < (lastpt - 1))
+            {
+                drawCurve(pnts[i-2], pnts[i-1], pnts[i], pnts[i+1]);
+            }
         }
 	}
 
@@ -231,11 +210,30 @@ void catmull::draw()
 
 void catmull::animate()
 {
-	cerr << "setting animate to true\n";
 	animatenow=true;
 	param =  0;
 	nframe=0;
 	seg = 0;
+}
+
+void catmull::tensionSlider(int tensionValueL)
+{
+    tensionValue = tensionValueL;
+}
+
+void catmull::controlPoints(bool showControlPointsL)
+{
+    showControlPoints = showControlPointsL;
+}
+
+void catmull::controlLines(bool showControlLinesL)
+{
+    showControlLines = showControlLinesL;
+}
+
+void catmull::catmullRom(bool showCatmullRomL)
+{
+    showCatmullRom = showCatmullRomL;
 }
 
 
