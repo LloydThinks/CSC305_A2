@@ -30,11 +30,10 @@ public:
 
     void setxoff(int i){xoff=i;}
     void setyoff(int i){yoff=i;}
-	void drawCurve(int p);
+    void drawCurve(int pnt1[3], int pnt2[3], int pnt3[3], int pnt4[3]);
     void clear(){lastpt=0;}
     void setHull(bool b){hull=b;}
-	void animate();
-	bool step();
+    void animate();
 	void setSpeed(int v){
 		if (v>numSteps) error=1;
 		else frames=v;
@@ -46,10 +45,9 @@ public:
 			cerr << "************* Error Make steps ("<<g <<") >= frames (" <<  frames <<")\n";
 		}
 		else {
-		numSteps=g;
-		makeArcLength();
+        numSteps=g;
 		}
-	};
+    }
 
     void showSteps(bool b){showsteps=b; cerr << "showsteps\n";}
     void setTV(int j){tvmethod=j;}
@@ -66,24 +64,18 @@ private:
 	int lastpt, cpt, seg, tvmethod;
     int pnts[MAXP][3];
     jVec2 tv[MAXP];  // must make this a 3D vector
-	int mousex, mousey;
 	bool mousedown, hull, animatenow, showsteps, arcLengthSwitch, makeArcMode;
-	int button, frames, tframes, numSteps, nframe;
-	int param; // t parameter
-//	int iparam; // counts segments
-	int xoff, yoff;
+    int frames,numSteps, nframe;
+    int param; // t parameter
+    int xoff, yoff;
+    double tension;
 
     void addPoint(int x, int y, int z);
     void movePoint(int x, int y, int z, Mode window);
     int select(int x, int y, int z, Mode window);
-	bool nearzero(double x);
-	void makeArcLength();
+    bool nearzero(double x);
 	int motionType; // 0 = parameter value 1 = const velocity
-	double getTvalue(int p, int seg);
-	void makeArcMotion();
-	void printArcTab();
-	double vel; // 0 to 1 range
-	void drawConstVelCurve(int p);
+    double getTvalue(int p, int seg);
 
 };
 

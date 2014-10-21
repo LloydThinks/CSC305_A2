@@ -37,6 +37,7 @@ typedef int bool;
 #include <stdio.h>
 #include <QEvent>
 #include <qfiledialog.h>
+#include <qdebug.h>
 
 
 
