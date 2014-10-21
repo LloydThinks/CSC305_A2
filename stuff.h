@@ -18,7 +18,7 @@ void backCol();
 int sn(double posThresh);
 int irand(int max);
 double randRange(double a, double b);
-void error(char *buf, bool fatal);
+void error(bool fatal);
 //QString today();
 double dist(double x0, double y0, double x1, double y1);
 

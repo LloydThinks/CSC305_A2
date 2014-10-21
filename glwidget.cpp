@@ -4,8 +4,6 @@
 
 #include "glwidget.h"
 
-const double torad = M_PI/180.0;
-const double lim=0.5;
 const double RadPerPixel = - 0.01;
 const double MovePerPixel = - 0.1;
 GLfloat vertices[4][2] = {{100.0, 100.0}, {400.0, 100.0}, {400.0, 400.0}, {100.0, 400.0}}; //  vertex coords

@@ -133,6 +133,7 @@ bool catmull::nearzero(double x)
 void catmull::drawCurve(int pnt1[], int pnt2[], int pnt3[], int pnt4[])
 {
     glColor3f(0.129f, 0.850f, 0.768f);
+    // Save the original points per segment
     double stepX0 = double(pnt2[0]);
     double stepY0 = double(pnt2[1]);
     double stepZ0 = double(pnt2[2]);
@@ -140,7 +141,8 @@ void catmull::drawCurve(int pnt1[], int pnt2[], int pnt3[], int pnt4[])
     double t = double(tensionValue)/50.0;
     double step = 1.0/double(numSteps);
     double u = step;
-
+    // Each time through the loop, use a calculation on u to find the next step
+    // Each step is a point to be drawn
     for (int i = 0; i < numSteps; i++)
     {
         stepX1 = (double(pnt1[0]) * (-t*u + 2*t*u*u - t*u*u*u) + \
@@ -162,6 +164,7 @@ void catmull::drawCurve(int pnt1[], int pnt2[], int pnt3[], int pnt4[])
 
         u += step;
     }
+    // Draw the final line per segment, to connect with the next segment
     drawLine(stepX1, stepY1, stepZ1, double(pnt3[0]), double(pnt3[1]), double(pnt3[2]));
 
 }

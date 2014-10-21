@@ -27,6 +27,7 @@ Window::Window(QWidget *parent):QDialog(parent)
     //All our drawings will be on glWidgetArea
     glWidgetArea->setWidget(m_glWidget); // gl widget perspective view
 
+    // twod constructor uses an enum to individualize itself
     sideview1 = new twod(catmull::XY);  // this is the first sideview
     sideview1->setWindowTitle("XY Plane");
     sideview2 = new twod(catmull::XZ);  // this is the first sideview

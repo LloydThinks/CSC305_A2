@@ -58,7 +58,7 @@ double myrand()
   return rand()/(double)RAND_MAX;
 }
 
-void error(char *buf, bool fatal)
+void error(bool fatal)
 {
   if (fatal) exit(-1);
 }
@@ -72,15 +72,3 @@ int nearEpsilon(double x, double epsilon)
 {
   return (x <= epsilon && x >= -epsilon);
 }
-
-/*QString today()
-{
-        QDate date = QDate::currentDate();
-	QString s,syear;
-	// returns a QString with todays date
-	s.sprintf( "%2d/", date.day());
-	s.append(date.shortMonthName(date.month()));
-	syear.sprintf( "/%4d", date.year() );
-	s.append(syear);
-	return s;
-}*/

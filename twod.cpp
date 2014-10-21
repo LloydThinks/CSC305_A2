@@ -71,6 +71,12 @@ void twod::resizeGL( int w, int h )
     glViewport( 0, 0, (GLint)w, (GLint)h );
 }
 
+/* QVector<double> twod::convertClick(QVector<double> click)
+ *
+ * Converts the given click to a window-normalized version.  The e->click event that
+ * returns x and y, is realtive to the window, not the coordinate system.  A simple
+ * calculation changes that.
+ */
 QVector<double> twod::convertClick(QVector<double> click)
 {
     click[0] = ((click.at(0) * 2) - width());
